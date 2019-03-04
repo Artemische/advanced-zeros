@@ -52,18 +52,28 @@ module.exports = function getZerosCount(number, base) {
   let dividersOfBase = normalDividers(allDividers);
   console.log(dividersOfBase);
 
-  function dividersOfNum(number, dividersOfBase, numberOfDividers, powers){
-    let num = 0;
-    let i = 1;
-    let delitel = dividersOfBase[numberOfDividers-1];
-    while (delitel < number) {
-        num += Math.trunc(number/ delitel);
-        delitel *= dividersOfBase[numberOfDividers-1];
+  function dividersOfNum(number, dividersOfBase, powers){
+    let num = [];
+    let j = 1;
+    let vxogdeniy = dividersOfBase.slice();
+    for (let i = 0; i < dividersOfBase.length; i++) {
+      num.push(0);
     }
-    return num / powers[numberOfDividers-1];
+    for (let i = 0; i < dividersOfBase.length; i++) {
+      j = 1;
+      while (vxogdeniy[i] < number) {
+        vxogdeniy[i] = Math.pow(dividersOfBase[i],j);
+        num[i] += Math.floor(number/ vxogdeniy[i]);
+        j += 1
+      }
+    }
+    for (let i = 0; i < num.length; i++) {
+      num[i] = num[i]/powers[i]
+    }
+    let result = Math.min.apply(null, num);
+    return result;
   }
-
-  let result = dividersOfNum(number, dividersOfBase, numberOfDividers, powers);
-  console.log(result);  
-  return Math.trunc(result);
+let result = dividersOfNum(number, dividersOfBase, powers);
+console.log(result);
+return Math.trunc(result);
 }
